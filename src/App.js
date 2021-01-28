@@ -1,7 +1,12 @@
 import React from "react";
+import { Steps } from "./features/steps/Steps";
 
 function App() {
-  return <div></div>;
+  return (
+    <div>
+      <Steps />
+    </div>
+  );
 }
 
 export default App;
