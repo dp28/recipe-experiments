@@ -15,7 +15,6 @@ export const stepsSlice = createSlice({
         input: {
           ingredients: stepInput.ingredients,
           previousStepIds: stepInput.previousStepIds,
-          equipment: stepInput.equipment,
         },
         time: {
           estimateInSeconds: stepInput.timeEstimateInSeconds,

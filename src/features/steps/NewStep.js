@@ -12,6 +12,9 @@ import {
   FormControl,
   InputLabel,
   makeStyles,
+  FormHelperText,
+  Tooltip,
+  Chip,
 } from "@material-ui/core";
 import { addStep } from "./stepsSlice";
 import { AttentionLevels } from "../attentionLevel/attentionLevels";
@@ -21,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
     minWidth: 140,
   },
+  info: {
+    marginLeft: theme.spacing(1),
+  },
 }));
 
 export const NewStep = ({ onComplete }) => {
@@ -28,7 +34,6 @@ export const NewStep = ({ onComplete }) => {
   const [instruction, setInstruction] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [previousStepIds, setPreviousStepIds] = useState([]);
-  const [equipment, setEquipment] = useState([]);
   const [timeEstimateInSeconds, setTimeEstimateInSeconds] = useState(null);
   const [timerUseful, setTimerUseful] = useState(false);
   const [reminderInterval, setReminderInterval] = useState(null);
@@ -62,9 +67,15 @@ export const NewStep = ({ onComplete }) => {
             {AttentionLevels.map((attentionLevel) => (
               <MenuItem key={attentionLevel.id} value={attentionLevel.id}>
                 {attentionLevel.label}
+                <Tooltip title={attentionLevel.description}>
+                  <Chip className={classes.info} label="?" size="small" />
+                </Tooltip>
               </MenuItem>
             ))}
           </Select>
+          <FormHelperText>
+            How much of your attention the instruction requires
+          </FormHelperText>
         </FormControl>
       </CardContent>
       <CardActions>
@@ -77,7 +88,6 @@ export const NewStep = ({ onComplete }) => {
                 instruction,
                 ingredients,
                 previousStepIds,
-                equipment,
                 timeEstimateInSeconds,
                 timerUseful,
                 reminderInterval,
