@@ -18,11 +18,19 @@ import {
 } from "@material-ui/core";
 import { addStep } from "./stepsSlice";
 import { AttentionLevels } from "../attentionLevel/attentionLevels";
+import { TimeUnitsById, TimeUnits } from "../time/timeUnits";
+import { TimeInput } from "../time/TimeInput";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(3),
     minWidth: 140,
+  },
+  timeEstimate: {
+    marginTop: theme.spacing(3),
+  },
+  timeFormControl: {
+    marginLeft: theme.spacing(1),
   },
   info: {
     marginLeft: theme.spacing(1),
@@ -34,11 +42,11 @@ export const NewStep = ({ onComplete }) => {
   const [instruction, setInstruction] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [previousStepIds, setPreviousStepIds] = useState([]);
-  const [timeEstimateInSeconds, setTimeEstimateInSeconds] = useState(null);
-  const [timerUseful, setTimerUseful] = useState(false);
-  const [reminderInterval, setReminderInterval] = useState(null);
+  const [timeEstimateInSeconds, setTimeEstimateInSeconds] = useState(
+    5 * TimeUnitsById.MINUTE.inSeconds
+  );
+  const [timersInSeconds, setTimersInSeconds] = useState(false);
   const [attentionLevelId, setAttentionLevelId] = useState("");
-  const [output, setOutput] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -77,6 +85,8 @@ export const NewStep = ({ onComplete }) => {
             How much of your attention the instruction requires
           </FormHelperText>
         </FormControl>
+
+        <TimeInput label="Time estimate" onChange={setTimeEstimateInSeconds} />
       </CardContent>
       <CardActions>
         <Button onClick={onComplete}>Cancel</Button>
@@ -89,10 +99,8 @@ export const NewStep = ({ onComplete }) => {
                 ingredients,
                 previousStepIds,
                 timeEstimateInSeconds,
-                timerUseful,
-                reminderInterval,
+                timersInSeconds,
                 attentionLevelId,
-                output,
               })
             );
             onComplete();

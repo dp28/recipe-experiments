@@ -18,11 +18,9 @@ export const stepsSlice = createSlice({
         },
         time: {
           estimateInSeconds: stepInput.timeEstimateInSeconds,
-          timerUseful: stepInput.timerUseful,
-          reminderInterval: stepInput.reminderInterval,
+          timersInSeconds: stepInput.timersInSeconds,
         },
         attentionLevelId: stepInput.attentionLevelId,
-        output: stepInput.output,
       };
     }),
   },
