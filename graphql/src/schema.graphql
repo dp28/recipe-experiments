@@ -1,8 +1,192 @@
+# scalar PositiveFloat
+# scalar PositiveInt
+
 type Food {
   id: ID!
   name: String!
+
+  """
+  How to convert measurements specifically for this food, eg 1 cup of flour in
+  grams.
+  """
+  conversionRatios: [FoodConversionRatio!]!
+
+  """
+  Returns the conversion ratio to use to convert to the most appropriate of the
+  provided units. May be null if no appropriate conversions are known.
+  """
+  preferredConversionRatio(unitIds: [ID!]!): FoodConversionRatio
 }
 
+type FoodConversionRatio {
+  food: Food!
+  unitConversionRatio: UnitConversionRatio!
+}
+
+type Noun {
+  singular: String!
+  plural: String!
+}
+
+interface FoodAmount {
+  food: Food!
+  amount: Amount!
+}
+
+type Ingredient implements FoodAmount {
+  food: Food!
+  amount: Amount!
+  optional: Boolean!
+  recipes: [Recipe!]!
+}
+
+type Product implements FoodAmount {
+  food: Food!
+
+  """
+  How much of the Food is produced. Often an amount of servings or portions.
+  """
+  amount: Amount!
+}
+
+type Recipe {
+  id: ID!
+
+  """
+  The output of this Recipe.
+  """
+  product: Product!
+
+  """
+  The last Step of this recipe. Intended for recursively building a recipe out
+  of Steps.
+  """
+  finalStep: Step!
+
+  """
+  All the specific Steps used in this Recipe, rather than all the possible
+  alternatives. Intended to be used by the client to build the progression of
+  Steps without requiring recursive queries.
+  """
+  allSteps: [Step!]
+}
+
+# ------------------------------------------------------------------------------
+# Steps
+# ------------------------------------------------------------------------------
+type Step {
+  id: ID!
+  input: StepInput!
+  instruction: Instruction!
+  time: StepTime!
+  attentionLevel: AttentionLevel!
+  alternativeSteps: [Step!]!
+}
+
+type StepInput {
+  """
+  The ingredients required for a Step.
+  """
+  ingredients: [Ingredient!]!
+
+  """
+  Any previous Steps whose outputs are directly required.
+  """
+  previousSteps: [Step!]!
+}
+
+type Instruction {
+  """
+  How to perform the Step.
+  """
+  text: String!
+}
+
+type StepTime {
+  estimatedDurationInSeconds: Int!
+
+  """
+  Any timers that should be shown to the user when following the recipe.
+  """
+  timers: [TimerSpecification!]!
+}
+
+type TimerSpecification {
+  durationInSeconds: Int!
+}
+
+"""
+How much attention you need to pay when performing a Step's Instruction.
+"""
+type AttentionLevel {
+  id: ID!
+  label: String!
+  description: String!
+}
+
+# ------------------------------------------------------------------------------
+# Amounts
+# ------------------------------------------------------------------------------
+union Amount = MeasuredAmount | RoughAmount | RawQuantity
+
+type Unit {
+  id: ID!
+  symbol: String!
+  name: Noun!
+
+  """
+  How to convert from this unit others, eg from grams to kilograms, or pounds to
+  grams.
+  """
+  conversionRatios: [UnitConversionRatio!]!
+
+  """
+  Returns the conversion ratio to use to convert to the most appropriate of the
+  provided units. May be null if no appropriate conversions are known.
+  """
+  preferredConversionRatio(unitIds: [ID!]!): UnitConversionRatio
+}
+
+type RoughUnit {
+  name: Noun!
+}
+
+type UnitConversionRatio {
+  fromUnit: Unit!
+  toUnit: Unit!
+  ratio: Float!
+}
+
+type MeasuredAmount {
+  exactQuantity: Float!
+  unit: Unit!
+}
+
+type RoughAmount {
+  quantity: Int
+  unit: RoughUnit!
+}
+
+type RawQuantity {
+  exactQuantity: Float!
+}
+
+# ------------------------------------------------------------------------------
+# Top-level
+# ------------------------------------------------------------------------------
+
 type Query {
-  foods: [Food]!
+  foods: [Food!]!
+  units: [Unit!]!
+  recipes: [Recipe!]!
+
+  food(id: ID!): Food!
+  step(id: ID!): Step!
+  recipe(id: ID!): Recipe!
+  unit(id: ID!): Unit!
+
+  """
+  Find recipes that match a search term (eg food name).
+  """
+  searchForRecipe(searchString: String!): [Recipe!]!
 }

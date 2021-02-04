@@ -4,7 +4,6 @@ import { graphqlHTTP } from "express-graphql";
 import { join, dirname } from "path";
 import { loadSchemaSync } from "@graphql-tools/load";
 import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
-import { addResolversToSchema } from "@graphql-tools/schema";
 import { addMocksToSchema } from "@graphql-tools/mock";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

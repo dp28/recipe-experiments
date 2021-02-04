@@ -1,0 +1,71 @@
+fragment AmountFragment on Amount {
+  ... on RawQuantity {
+    exactQuantity
+  }
+  ... on RoughAmount {
+    quantity
+    unit {
+      name {
+        singular
+      }
+    }
+  }
+  ... on MeasuredAmount {
+    exactQuantity
+    unit {
+      symbol
+      conversionRatios {
+        toUnit {
+          symbol
+        }
+        ratio
+      }
+    }
+  }
+}
+
+query {
+  searchForRecipe(searchString: "Bolognese") {
+    product {
+      food {
+        name
+      }
+      amount {
+        ...AmountFragment
+      }
+    }
+    finalStep {
+      id
+    }
+    allSteps {
+      id
+      input {
+        ingredients {
+          food {
+            name
+          }
+          amount {
+            ...AmountFragment
+          }
+          optional
+        }
+      }
+      instruction {
+        text
+      }
+      attentionLevel {
+        id
+        label
+      }
+      time {
+        estimatedDurationInSeconds
+        timers {
+          durationInSeconds
+        }
+      }
+      alternativeSteps {
+        id
+      }
+    }
+  }
+}
