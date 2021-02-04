@@ -1,0 +1,8 @@
+type Food {
+  id: ID!
+  name: String!
+}
+
+type Query {
+  foods: [Food]!
+}
