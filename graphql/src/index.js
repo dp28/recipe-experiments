@@ -3,8 +3,10 @@ import { fileURLToPath } from "url";
 import { graphqlHTTP } from "express-graphql";
 import { join, dirname } from "path";
 import { loadSchemaSync } from "@graphql-tools/load";
+import { addResolversToSchema } from "@graphql-tools/schema";
 import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
 import { addMocksToSchema } from "@graphql-tools/mock";
+import { AttentionLevelsFetcher } from "./attentionLevels.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -14,14 +16,25 @@ const schema = loadSchemaSync(join(__dirname, "./schema.graphql"), {
   loaders: [new GraphQLFileLoader()],
 });
 
-const executableSchema = addMocksToSchema({ schema });
+const resolvers = {
+  Query: {
+    attentionLevels: AttentionLevelsFetcher.loadAll,
+  },
+};
+
+const executableSchema = addResolversToSchema({ schema, resolvers });
+
+const mockedSchema = addMocksToSchema({
+  schema: executableSchema,
+  preserveResolvers: true,
+});
 
 const app = express();
 
 app.use(
   "/graphql",
   graphqlHTTP({
-    schema: executableSchema,
+    schema: mockedSchema,
     graphiql: true,
   })
 );

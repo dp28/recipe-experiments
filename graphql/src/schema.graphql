@@ -122,6 +122,7 @@ type AttentionLevel {
   id: ID!
   label: String!
   description: String!
+  ordering: Int!
 }
 
 # ------------------------------------------------------------------------------
@@ -179,7 +180,9 @@ type Query {
   foods: [Food!]!
   units: [Unit!]!
   recipes: [Recipe!]!
+  attentionLevels: [AttentionLevel!]!
 
+  attentionLevel(id: ID!): AttentionLevel!
   food(id: ID!): Food!
   step(id: ID!): Step!
   recipe(id: ID!): Recipe!
