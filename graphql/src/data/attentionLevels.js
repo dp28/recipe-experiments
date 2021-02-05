@@ -35,3 +35,7 @@ export const AttentionLevelsFetcher = {
   findMany: async (ids) =>
     ids.map((id) => AttentionLevelsById[id]).filter(Boolean),
 };
+
+export const register = (dependencyContainer) => {
+  dependencyContainer.register({ AttentionLevelsFetcher });
+};

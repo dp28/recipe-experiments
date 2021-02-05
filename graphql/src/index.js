@@ -6,7 +6,10 @@ import { loadSchemaSync } from "@graphql-tools/load";
 import { addResolversToSchema } from "@graphql-tools/schema";
 import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
 import { addMocksToSchema } from "@graphql-tools/mock";
-import { AttentionLevelsFetcher } from "./attentionLevels.js";
+import * as data from "./data/index.js";
+import { createDependencyContainer } from "./dependencyContainer.js";
+import { buildResolvers } from "./data/resolvers.js";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -16,11 +19,10 @@ const schema = loadSchemaSync(join(__dirname, "./schema.graphql"), {
   loaders: [new GraphQLFileLoader()],
 });
 
-const resolvers = {
-  Query: {
-    attentionLevels: AttentionLevelsFetcher.loadAll,
-  },
-};
+const dependencyContainer = createDependencyContainer();
+data.register(dependencyContainer);
+
+const resolvers = buildResolvers(dependencyContainer);
 
 const executableSchema = addResolversToSchema({ schema, resolvers });
 
