@@ -6,6 +6,12 @@ type Food {
   name: String!
 
   """
+  Qualifies a specific aspect of the food, such as the type of cheese or cut of
+  meat.
+  """
+  modifier: String
+
+  """
   How to convert measurements specifically for this food, eg 1 cup of flour in
   grams.
   """
@@ -184,11 +190,11 @@ type Query {
   attentionLevels: [AttentionLevel!]!
   roughUnits: [RoughUnit!]!
 
-  attentionLevel(id: ID!): AttentionLevel!
-  food(id: ID!): Food!
-  step(id: ID!): Step!
-  recipe(id: ID!): Recipe!
-  unit(id: ID!): Unit!
+  attentionLevel(id: ID!): AttentionLevel
+  food(id: ID!): Food
+  step(id: ID!): Step
+  recipe(id: ID!): Recipe
+  unit(id: ID!): Unit
 
   """
   Find recipes that match a search term (eg food name).
