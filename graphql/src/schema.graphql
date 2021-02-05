@@ -149,6 +149,7 @@ type Unit {
 }
 
 type RoughUnit {
+  id: ID!
   name: Noun!
 }
 
@@ -181,6 +182,7 @@ type Query {
   units: [Unit!]!
   recipes: [Recipe!]!
   attentionLevels: [AttentionLevel!]!
+  roughUnits: [RoughUnit!]!
 
   attentionLevel(id: ID!): AttentionLevel!
   food(id: ID!): Food!

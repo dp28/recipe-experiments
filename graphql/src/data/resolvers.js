@@ -3,11 +3,13 @@ export function buildResolvers(dependencyContainer) {
     "AttentionLevelsFetcher"
   );
   const unitsFetcher = dependencyContainer.resolve("UnitsFetcher");
+  const roughUnitsFetcher = dependencyContainer.resolve("RoughUnitsFetcher");
 
   return {
     Query: {
       attentionLevels: attentionLevelFetcher.loadAll,
       units: unitsFetcher.loadAll,
+      roughUnits: roughUnitsFetcher.loadAll,
     },
   };
 }

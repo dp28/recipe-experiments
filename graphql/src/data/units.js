@@ -1,4 +1,6 @@
-const Units = [
+import { buildRegisterFetcher } from "./inMemoryFetcher.js";
+
+export const register = buildRegisterFetcher("Units", [
   {
     id: "lb",
     symbol: "lb",
@@ -119,19 +121,4 @@ const Units = [
       plural: "kilograms",
     },
   },
-];
-
-const UnitsById = Units.reduce((result, unit) => {
-  result[unit.id] = unit;
-  return result;
-}, {});
-
-export const UnitsFetcher = {
-  loadAll: async () => Units,
-  find: async (id) => UnitsById[id],
-  findMany: async (ids) => ids.map((id) => UnitsById[id]).filter(Boolean),
-};
-
-export const register = (dependencyContainer) => {
-  dependencyContainer.register({ UnitsFetcher });
-};
+]);
