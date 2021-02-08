@@ -1,15 +1,32 @@
 import { buildRegisterFetcher } from "./inMemoryFetcher.js";
 
 export const register = buildRegisterFetcher("Foods", [
-  { id: "1", name: "onion", conversionRatios: [] },
-  { id: "2", name: "oil", conversionRatios: [] },
-  { id: "3", name: "salt", conversionRatios: [] },
-  { id: "4", name: "plum tomato", conversionRatios: [] },
-  { id: "5", name: "steak mince", modifier: "20% fat", conversionRatios: [] },
-  { id: "6", name: "cheese", modifier: "Cheddar", conversionRatios: [] },
-  { id: "7", name: "pasta", modifier: "fusili", conversionRatios: [] },
-  { id: "8", name: "milk", conversionRatios: [] },
-  { id: "9", name: "flour", conversionRatios: [] },
-  { id: "10", name: "butter", conversionRatios: [] },
-  { id: "11", name: "butternut squash", conversionRatios: [] },
+  { id: "onion", name: "onion", conversionRatios: [] },
+  { id: "oil", name: "oil", conversionRatios: [] },
+  { id: "salt", name: "salt", conversionRatios: [] },
+  { id: "water", name: "water", conversionRatios: [] },
+  { id: "plum tomato", name: "plum tomato", conversionRatios: [] },
+  {
+    id: "can tomato",
+    name: "can of chopped tomatoes",
+    conversionRatios: [],
+  },
+  {
+    id: "chopped tomatoes",
+    name: "chopped tomatoes",
+    conversionRatios: [],
+  },
+  {
+    id: "steak mince",
+    name: "steak mince",
+    modifier: "20% fat",
+    conversionRatios: [],
+  },
+  { id: "cheese", name: "cheese", modifier: "Cheddar", conversionRatios: [] },
+  { id: "pasta", name: "pasta", modifier: "fusili", conversionRatios: [] },
+  { id: "milk", name: "milk", conversionRatios: [] },
+  { id: "flour", name: "flour", conversionRatios: [] },
+  { id: "butter", name: "butter", conversionRatios: [] },
+  { id: "butternut squash", name: "butternut squash", conversionRatios: [] },
+  { id: "bolognese", name: "Bolognese sauce", conversionRatios: [] },
 ]);

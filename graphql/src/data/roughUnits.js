@@ -36,4 +36,25 @@ export const register = buildRegisterFetcher("RoughUnits", [
       plural: "heads",
     },
   },
+  {
+    id: "portion",
+    name: {
+      singular: "portion",
+      plural: "portions",
+    },
+  },
+  {
+    id: "serving",
+    name: {
+      singular: "serving",
+      plural: "servings",
+    },
+  },
+  {
+    id: "slice",
+    name: {
+      singular: "slice",
+      plural: "slices",
+    },
+  },
 ]);

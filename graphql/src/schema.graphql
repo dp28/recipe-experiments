@@ -58,6 +58,8 @@ type Product implements FoodAmount {
 type Recipe {
   id: ID!
 
+  name: String
+
   """
   The output of this Recipe.
   """
@@ -70,11 +72,11 @@ type Recipe {
   finalStep: Step!
 
   """
-  All the specific Steps used in this Recipe, rather than all the possible
+  All the other specific Steps used in this Recipe, rather than all the possible
   alternatives. Intended to be used by the client to build the progression of
   Steps without requiring recursive queries.
   """
-  allSteps: [Step!]
+  allOtherSteps: [Step!]
 }
 
 # ------------------------------------------------------------------------------
