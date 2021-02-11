@@ -1,6 +1,6 @@
 import { buildRegisterFetcher } from "./inMemoryFetcher.js";
 
-export const register = buildRegisterFetcher("Steps", [
+export const register = buildRegisterFetcher("Recipes", [
   {
     id: "bolognese",
     product: {
@@ -26,3 +26,19 @@ export const register = buildRegisterFetcher("Steps", [
     allOtherStepIds: [],
   },
 ]);
+
+export function buildRecipeResolvers(dependencyContainer) {
+  const foodsFetcher = dependencyContainer.resolve("FoodsFetcher");
+  const stepsFetcher = dependencyContainer.resolve("StepsFetcher");
+
+  return {
+    Product: {
+      food: (product) => foodsFetcher.find(product.foodId),
+    },
+
+    Recipe: {
+      finalStep: (recipe) => stepsFetcher.find(recipe.finalStepId),
+      allOtherSteps: (recipe) => stepsFetcher.findMany(recipe.allOtherStepIds),
+    },
+  };
+}

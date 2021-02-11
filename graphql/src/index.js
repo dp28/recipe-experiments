@@ -5,7 +5,6 @@ import { join, dirname } from "path";
 import { loadSchemaSync } from "@graphql-tools/load";
 import { addResolversToSchema } from "@graphql-tools/schema";
 import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
-import { addMocksToSchema } from "@graphql-tools/mock";
 import * as data from "./data/index.js";
 import { createDependencyContainer } from "./dependencyContainer.js";
 import { buildResolvers } from "./data/resolvers.js";
@@ -26,17 +25,12 @@ const resolvers = buildResolvers(dependencyContainer);
 
 const executableSchema = addResolversToSchema({ schema, resolvers });
 
-const mockedSchema = addMocksToSchema({
-  schema: executableSchema,
-  preserveResolvers: true,
-});
-
 const app = express();
 
 app.use(
   "/graphql",
   graphqlHTTP({
-    schema: mockedSchema,
+    schema: executableSchema,
     graphiql: true,
   })
 );

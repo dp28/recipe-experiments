@@ -6,6 +6,7 @@ export const register = buildRegisterFetcher("Foods", [
   { id: "salt", name: "salt", conversionRatios: [] },
   { id: "water", name: "water", conversionRatios: [] },
   { id: "plum tomato", name: "plum tomato", conversionRatios: [] },
+  { id: "tomato puree", name: "tomato puree", conversionRatios: [] },
   {
     id: "can tomato",
     name: "can of chopped tomatoes",
@@ -29,4 +30,9 @@ export const register = buildRegisterFetcher("Foods", [
   { id: "butter", name: "butter", conversionRatios: [] },
   { id: "butternut squash", name: "butternut squash", conversionRatios: [] },
   { id: "bolognese", name: "Bolognese sauce", conversionRatios: [] },
+  {
+    id: "worcestershire sauce",
+    name: "Worcestershire sauce",
+    conversionRatios: [],
+  },
 ]);
