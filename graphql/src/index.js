@@ -1,5 +1,6 @@
 import express from "express";
 import { fileURLToPath } from "url";
+import cors from "cors";
 import { graphqlHTTP } from "express-graphql";
 import { join, dirname } from "path";
 import { loadSchemaSync } from "@graphql-tools/load";
@@ -26,6 +27,7 @@ const resolvers = buildResolvers(dependencyContainer);
 const executableSchema = addResolversToSchema({ schema, resolvers });
 
 const app = express();
+app.use(cors());
 
 app.use(
   "/graphql",

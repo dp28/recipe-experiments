@@ -31,7 +31,9 @@ export function buildResolvers(dependencyContainer) {
       foods: foodsFetcher.loadAll,
       food: (_, { id }) => foodsFetcher.find(id),
 
+      recipes: recipesFetcher.loadAll,
       recipe: (_, { id }) => recipesFetcher.find(id),
+
       step: (_, { id }) => logAndReturn(stepsFetcher.find(id)),
     },
   };
