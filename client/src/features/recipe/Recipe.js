@@ -38,7 +38,7 @@ export const Recipe = () => {
 
   return (
     <div>
-      <Typography component="h1" gutterBottom>
+      <Typography variant="h3" gutterBottom>
         {title}
       </Typography>
 
