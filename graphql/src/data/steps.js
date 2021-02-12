@@ -219,7 +219,7 @@ export const register = buildRegisterFetcher("Steps", [
       previousStepIds: ["combine bolognese ingredients"],
     },
     time: {
-      estimatedDurationInSeconds: 30 * 60,
+      estimatedDurationInSeconds: 90 * 60,
       timers: [],
     },
     attentionLevelId: "HIGH",

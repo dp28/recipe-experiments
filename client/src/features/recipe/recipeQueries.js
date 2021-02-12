@@ -30,6 +30,7 @@ export const RecipeQuery = gql`
     attentionLevel {
       id
       label
+      description
     }
     input {
       ingredients {

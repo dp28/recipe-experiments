@@ -1,9 +1,17 @@
 import React from "react";
 import { Typography, makeStyles, Card, CardContent } from "@material-ui/core";
+import { StepDuration } from "./StepDuration";
 
 const useStyles = makeStyles((theme) => ({
   planningStep: {
     minHeight: ({ step }) => step.time.estimatedDurationInSeconds / 10,
+    display: "table-cell",
+  },
+  content: {
+    display: "table-row",
+  },
+  duration: {
+    display: "table-cell",
   },
   stepAndDependencies: {},
   previousSteps: {
@@ -34,11 +42,14 @@ export function PlanningStep({ stepTreeNode, stepsById }) {
           </div>
         ))}
       </div>
-      <Card className={classes.planningStep}>
-        <CardContent>
-          <Typography>{step.instruction.text}</Typography>
-        </CardContent>
-      </Card>
+      <div className={classes.content}>
+        <StepDuration step={step} className={classes.duration} />
+        <Card className={classes.planningStep}>
+          <CardContent>
+            <Typography>{step.instruction.text}</Typography>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
