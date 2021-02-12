@@ -1,31 +1,14 @@
 import React from "react";
-import { List, ListItem, Typography } from "@material-ui/core";
-import { useQuery, gql } from "@apollo/client";
+import { Typography } from "@material-ui/core";
+import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
-
-const RECIPE_QUERY = gql`
-  query Recipe($id: ID!) {
-    recipe(id: $id) {
-      id
-      name
-      product {
-        food {
-          name
-        }
-      }
-      finalStep {
-        id
-      }
-      allOtherSteps {
-        id
-      }
-    }
-  }
-`;
+import { RecipeQuery } from "./recipeQueries";
+import { buildRecipeTree } from "./recipeTree";
+import { PlanningStep } from "./PlanningStep";
 
 export const Recipe = () => {
   const { recipeId } = useParams();
-  const { loading, error, data } = useQuery(RECIPE_QUERY, {
+  const { loading, error, data } = useQuery(RecipeQuery, {
     variables: { id: recipeId },
   });
 
@@ -34,7 +17,7 @@ export const Recipe = () => {
 
   const { recipe } = data;
   const title = recipe.name || recipe.product.food.name;
-  const steps = [recipe.finalStep, ...recipe.allOtherSteps];
+  const { rootTreeNode, stepsById } = buildRecipeTree(recipe);
 
   return (
     <div>
@@ -42,7 +25,7 @@ export const Recipe = () => {
         {title}
       </Typography>
 
-      <Typography>{steps.length} steps</Typography>
+      <PlanningStep stepTreeNode={rootTreeNode} stepsById={stepsById} />
     </div>
   );
 };
