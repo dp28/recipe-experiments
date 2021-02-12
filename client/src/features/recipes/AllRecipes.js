@@ -1,6 +1,7 @@
 import React from "react";
 import { List, ListItem, Typography } from "@material-ui/core";
 import { useQuery, gql } from "@apollo/client";
+import { Link } from "react-router-dom";
 
 const RECIPES_QUERY = gql`
   query allRecipes {
@@ -29,7 +30,9 @@ export const AllRecipes = () => {
       <List>
         {data.recipes.map((recipe) => (
           <ListItem key={recipe.id}>
-            <Typography>{recipe.name || recipe.product.food.name}</Typography>
+            <Link to={`/recipes/${recipe.id}`}>
+              <Typography>{recipe.name || recipe.product.food.name}</Typography>
+            </Link>
           </ListItem>
         ))}
       </List>
