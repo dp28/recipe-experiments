@@ -1,10 +1,10 @@
 import React from "react";
-import { AllRecipes } from "./features/recipes/AllRecipes";
+import { Routes } from "./features/routes/Routes";
 
 function App() {
   return (
     <div>
-      <AllRecipes />
+      <Routes />
     </div>
   );
 }
