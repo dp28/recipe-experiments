@@ -25,6 +25,50 @@ export const register = buildRegisterFetcher("Recipes", [
     finalStepId: "chop tomatoes",
     allOtherStepIds: [],
   },
+  {
+    id: "simple syrup",
+    product: {
+      foodId: "simple syrup",
+      amount: { exactQuantity: 300, unitId: "ml" },
+    },
+    finalStepId: "heat syrup ingredients",
+    allOtherStepIds: ["combine syrup ingredients"],
+  },
+  {
+    id: "italian meringue",
+    product: {
+      foodId: "italian meringue",
+      amount: { quantity: 4, roughUnitId: "portion" },
+    },
+    finalStepId: "whisk syrup into egg whites",
+    allOtherStepIds: [
+      "heat syrup ingredients to soft ball",
+      "beat egg whites",
+      "combine thick syrup ingredients",
+    ],
+  },
+  {
+    id: "blood orange spoom",
+    product: {
+      foodId: "blood orange spoom",
+      amount: { quantity: 4, roughUnitId: "serving" },
+    },
+    finalStepId: "freeze spoom",
+    allOtherStepIds: [
+      "mix sorbet and meringue",
+      "partially freeze sorbet",
+      "combine sorbet ingredients",
+    ],
+  },
+  {
+    id: "egg white",
+    product: {
+      foodId: "egg white",
+      amount: { exactQuantity: 1 },
+    },
+    finalStepId: "separate eggs",
+    allOtherStepIds: [],
+  },
 ]);
 
 export function buildRecipeResolvers(dependencyContainer) {

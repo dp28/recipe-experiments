@@ -121,6 +121,7 @@ type StepTime {
 
 type TimerSpecification {
   durationInSeconds: Int!
+  repeat: Boolean!
 }
 
 """
