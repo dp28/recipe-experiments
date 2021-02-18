@@ -4,16 +4,23 @@ import { StepDuration } from "./StepDuration";
 
 const useStyles = makeStyles((theme) => ({
   planningStep: {
-    minHeight: ({ step }) => step.time.estimatedDurationInSeconds / 10,
-    display: "table-cell",
+    flexGrow: 1,
+    position: "relative",
   },
   content: {
-    display: "table-row",
+    display: "flex",
+    flexDirection: "row",
+  },
+  durationContainer: {
+    display: "flex",
+    flexDirection: "column",
   },
   duration: {
-    display: "table-cell",
+    flexGrow: 1,
   },
-  stepAndDependencies: {},
+  stepAndDependencies: {
+    flexGrow: 1,
+  },
   previousSteps: {
     display: "flex",
     flexDirection: "row",
@@ -22,7 +29,12 @@ const useStyles = makeStyles((theme) => ({
   previousStep: {
     flexGrow: 1,
     flexBasis: 1,
-    display: "block",
+    display: "flex",
+    alignItems: "flex-end",
+    marginRight: theme.spacing(2),
+    "&:last-child": {
+      marginRight: 0,
+    },
   },
 }));
 
@@ -43,7 +55,9 @@ export function PlanningStep({ stepTreeNode }) {
         ))}
       </div>
       <div className={classes.content}>
-        <StepDuration step={step} className={classes.duration} />
+        <div className={classes.durationContainer}>
+          <StepDuration step={step} className={classes.duration} />
+        </div>
         <Card className={classes.planningStep}>
           <CardContent>
             <Typography>{step.instruction.text}</Typography>
