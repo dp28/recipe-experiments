@@ -31,6 +31,7 @@ export const RecipeQuery = gql`
       id
       label
       description
+      ordering
     }
     input {
       ingredients {
