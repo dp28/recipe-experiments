@@ -48,7 +48,7 @@ export const register = buildRegisterFetcher("Steps", [
       previousStepIds: ["dice onions"],
     },
     time: {
-      estimatedDurationInSeconds: 300,
+      estimatedDurationInSeconds: 10 * 60,
       timers: [],
     },
     attentionLevelId: "LOW",
