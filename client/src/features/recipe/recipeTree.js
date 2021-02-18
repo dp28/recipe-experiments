@@ -2,10 +2,7 @@ export function buildRecipeTree(recipe) {
   const steps = [recipe.finalStep, ...recipe.allOtherSteps];
   const stepsById = indexById(steps);
 
-  return {
-    rootTreeNode: buildTreeFromSteps(stepsById, recipe.finalStep),
-    stepsById,
-  };
+  return buildTreeFromSteps(stepsById, recipe.finalStep);
 }
 
 function indexById(array) {
@@ -13,45 +10,47 @@ function indexById(array) {
 }
 
 function buildTreeFromSteps(stepsById, finalStep) {
-  const root = { id: finalStep.id, children: [] };
+  const root = { step: finalStep, children: [] };
   const nodesToProcess = [root];
 
   while (nodesToProcess.length) {
     const node = nodesToProcess.pop();
-    const step = stepsById[node.id];
-    node.children = step.input.previousSteps.map(({ id }) => ({
-      id,
+    node.children = node.step.input.previousSteps.map(({ id }) => ({
+      step: stepsById[id],
       children: [],
     }));
     node.children.forEach((child) => nodesToProcess.push(child));
   }
-  postprocess(root, stepsById);
+  postprocess(root);
 
   console.log(root);
 
   return root;
 }
 
-function postprocess(root, stepsById) {
+function postprocess(root) {
   const nodesToProcess = [root];
   const postOrderTraversal = [];
 
   while (nodesToProcess.length) {
     const node = nodesToProcess.pop();
-    node.children.forEach((child) => nodesToProcess.push(child));
+    node.children.forEach((child) => {
+      child.parent = node;
+      nodesToProcess.push(child);
+    });
     postOrderTraversal.unshift(node);
   }
 
   postOrderTraversal.forEach((node) => {
     node.depth = 1 + Math.max(0, ...node.children.map((_) => _.depth));
 
-    node.duration =
-      stepsById[node.id].time.estimatedDurationInSeconds +
-      Math.max(0, ...node.children.map((_) => _.duration));
+    node.minDuration =
+      node.step.time.estimatedDurationInSeconds +
+      Math.max(0, ...node.children.map((_) => _.minDuration));
 
     node.breadth =
       node.children.reduce((breadth, child) => breadth + child.breadth, 0) || 1;
 
-    node.children.sort((a, b) => (a.duration > b.duration ? -1 : 1));
+    node.children.sort((a, b) => (a.minDuration > b.minDuration ? -1 : 1));
   });
 }

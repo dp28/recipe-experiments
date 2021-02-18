@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function PlanningStep({ stepTreeNode, stepsById }) {
-  const step = stepsById[stepTreeNode.id];
+export function PlanningStep({ stepTreeNode }) {
+  const { step } = stepTreeNode;
   const classes = useStyles({
     step,
     childrenCount: stepTreeNode.children.length,
@@ -37,8 +37,8 @@ export function PlanningStep({ stepTreeNode, stepsById }) {
     <div className={classes.stepAndDependencies}>
       <div className={classes.previousSteps}>
         {stepTreeNode.children.map((childNode) => (
-          <div key={childNode.id} className={classes.previousStep}>
-            <PlanningStep stepTreeNode={childNode} stepsById={stepsById} />
+          <div key={childNode.step.id} className={classes.previousStep}>
+            <PlanningStep stepTreeNode={childNode} />
           </div>
         ))}
       </div>

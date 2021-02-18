@@ -17,7 +17,7 @@ export const Recipe = () => {
 
   const { recipe } = data;
   const title = recipe.name || recipe.product.food.name;
-  const { rootTreeNode, stepsById } = buildRecipeTree(recipe);
+  const rootTreeNode = buildRecipeTree(recipe);
 
   return (
     <div>
@@ -25,7 +25,7 @@ export const Recipe = () => {
         {title}
       </Typography>
 
-      <PlanningStep stepTreeNode={rootTreeNode} stepsById={stepsById} />
+      <PlanningStep stepTreeNode={rootTreeNode} />
     </div>
   );
 };
