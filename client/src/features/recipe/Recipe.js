@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Typography } from "@material-ui/core";
 import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
@@ -12,12 +12,16 @@ export const Recipe = () => {
     variables: { id: recipeId },
   });
 
+  const recipe = data?.recipe;
+  const rootTreeNode = useMemo(
+    () => (recipe ? buildRecipeTree(recipe) : null),
+    [recipe]
+  );
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
-  const { recipe } = data;
   const title = recipe.name || recipe.product.food.name;
-  const rootTreeNode = buildRecipeTree(recipe);
 
   return (
     <div>
