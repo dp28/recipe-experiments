@@ -1,28 +1,18 @@
-export const AttentionLevelsById = {
-  TOTAL: {
-    id: "TOTAL",
-    label: "Total",
-    description:
-      "An activity that requires your complete attention - you can't do anything else at the same time.",
-  },
-  HIGH: {
-    id: "HIGH",
-    label: "High",
-    description:
-      "An activity that requires most of your attention, but you can take short breaks (eg chopping vegetables).",
-  },
-  LOW: {
-    id: "LOW",
-    label: "Low",
-    description:
-      "An activity that only requires your attention every so often (eg roasting meat).",
-  },
-  NONE: {
-    id: "NONE",
-    label: "None",
-    description:
-      "An activity that doesn't require any of your attention (eg setting a cake aside to cool)",
-  },
-};
+import { sortBy } from "../../utils/arrays";
 
-export const AttentionLevels = Object.values(AttentionLevelsById);
+export function areParallelizable(actionLevel, otherActionLevel) {
+  const [lower, higher] = sortBy(
+    [actionLevel, otherActionLevel],
+    (_) => _.ordering
+  );
+
+  return (
+    lowAttentionOrLess(higher) ||
+    (higher.id === "TOTAL" && lower.id === "NONE") ||
+    (higher.id === "HIGH" && lowAttentionOrLess(lower))
+  );
+}
+
+export function lowAttentionOrLess(attentionLevel) {
+  return attentionLevel.id === "NONE" || attentionLevel.id === "LOW";
+}
