@@ -11,8 +11,17 @@ import {
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
+  router: {
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
+  },
+  appBar: {
+    flexGrow: 0,
+  },
   container: {
     marginTop: theme.spacing(3),
+    flexGrow: 1,
   },
 }));
 
@@ -21,8 +30,8 @@ export const Routes = () => {
 
   return (
     <Router>
-      <div>
-        <AppBar position="sticky">
+      <div className={classes.router}>
+        <AppBar position="sticky" className={classes.appBar}>
           <Toolbar>
             <Button component={Link} color="inherit" to="/">
               All recipes

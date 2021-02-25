@@ -8,8 +8,18 @@ import { PlanningStep } from "./PlanningStep";
 import { Timeline } from "../timeline/Timeline";
 
 const useStyles = makeStyles((theme) => ({
+  recipe: {
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+  },
   controls: {
     marginBottom: theme.spacing(3),
+  },
+  content: {
+    flexGrow: 1,
+    width: "100%",
   },
 }));
 
@@ -33,7 +43,7 @@ export const Recipe = () => {
   const title = recipe.name || recipe.product.food.name;
 
   return (
-    <div>
+    <div className={classes.recipe}>
       <Typography variant="h3" gutterBottom>
         {title}
       </Typography>
@@ -48,11 +58,13 @@ export const Recipe = () => {
         </Button>
       </div>
 
-      {showTree ? (
-        <PlanningStep stepTreeNode={rootTreeNode} />
-      ) : (
-        <Timeline rootTreeNode={rootTreeNode} />
-      )}
+      <div className={classes.content}>
+        {showTree ? (
+          <PlanningStep stepTreeNode={rootTreeNode} />
+        ) : (
+          <Timeline rootTreeNode={rootTreeNode} />
+        )}
+      </div>
     </div>
   );
 };
