@@ -222,7 +222,7 @@ export const register = buildRegisterFetcher("Steps", [
       estimatedDurationInSeconds: 90 * 60,
       timers: [],
     },
-    attentionLevelId: "HIGH",
+    attentionLevelId: "LOW",
     alternativeStepIds: [],
   },
 

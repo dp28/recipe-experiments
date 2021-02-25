@@ -11,8 +11,7 @@ const AttentionColours = {
 const useStyles = makeStyles((theme) => ({
   stepDuration: {
     backgroundColor: ({ step }) => AttentionColours[step.attentionLevel.id],
-    height: ({ secondsToPx, step }) =>
-      secondsToPx ? secondsToPx * step.time.estimatedDurationInSeconds : "100%",
+    height: "100%",
     minWidth: "4ch",
     display: "flex",
     alignItems: "center",
@@ -33,31 +32,36 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function StepDuration({ step, secondsToPx, className }) {
-  const classes = useStyles({ step, secondsToPx });
+export function StepDuration({ step, className, style, withHelp = false }) {
+  const classes = useStyles({ step });
 
   return (
-    <Tooltip
-      title={
-        <>
-          <Typography color="inherit" className={classes.toolTipTitle}>
-            Attention level:{" "}
-            <span className={classes.attentionLevelLabel}>
-              {step.attentionLevel.label}
-            </span>
+    <div className={className} style={style}>
+      <Tooltip
+        disableFocusListener={!withHelp}
+        disableHoverListener={!withHelp}
+        disableTouchListener={!withHelp}
+        title={
+          <>
+            <Typography color="inherit" className={classes.toolTipTitle}>
+              Attention level:{" "}
+              <span className={classes.attentionLevelLabel}>
+                {step.attentionLevel.label}
+              </span>
+            </Typography>
+            <Typography className={classes.toolTipContent}>
+              {step.attentionLevel.description}
+            </Typography>
+          </>
+        }
+      >
+        <div className={classes.stepDuration}>
+          <Typography className={classes.label}>
+            {toTimeString(step.time.estimatedDurationInSeconds)}
           </Typography>
-          <Typography className={classes.toolTipContent}>
-            {step.attentionLevel.description}
-          </Typography>
-        </>
-      }
-    >
-      <div className={`${classes.stepDuration} ${className}`}>
-        <Typography className={classes.label}>
-          {toTimeString(step.time.estimatedDurationInSeconds)}
-        </Typography>
-      </div>
-    </Tooltip>
+        </div>
+      </Tooltip>
+    </div>
   );
 }
 

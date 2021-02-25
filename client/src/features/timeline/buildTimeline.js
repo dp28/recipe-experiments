@@ -1,5 +1,8 @@
 import { sortBy } from "../../utils/arrays";
-import { areParallelizable } from "../attentionLevel/attentionLevels";
+import {
+  areParallelizable,
+  highAttentionOrMore,
+} from "../attentionLevel/attentionLevels";
 
 export function buildTimeline(rootNode) {
   const nodesToProcess = [rootNode];
@@ -12,6 +15,12 @@ export function buildTimeline(rootNode) {
   }
 
   reverseTimes(timeline);
+
+  timeline.duration = Math.max(
+    ...timeline.nodes.map((node) => node.timing.end)
+  );
+
+  timeline.streams = buildStreams(timeline);
 
   return timeline;
 }
@@ -82,6 +91,17 @@ function inInterval(number, start, end) {
   return start <= number && end > number;
 }
 
+function timingsOverlap(node, otherNode) {
+  return (
+    inInterval(
+      node.timing.start,
+      otherNode.timing.start,
+      otherNode.timing.end
+    ) ||
+    inInterval(node.timing.end, otherNode.timing.start, otherNode.timing.end)
+  );
+}
+
 function addNode(node, timeline) {
   timeline.nodes.push(node);
   sortBy(timeline.nodes, (_) => _.timing.end);
@@ -92,5 +112,45 @@ function reverseTimes(timeline) {
   timeline.nodes.forEach((node) => {
     node.timing.end = endTime - node.timing.end;
     node.timing.start = endTime - node.timing.start;
+  });
+  sortBy(timeline.nodes, (_) => _.timing.start);
+}
+
+function buildStreams(timeline) {
+  const highAttentionStream = [];
+  const backgroundStreams = [];
+  const nodes = [...timeline.nodes];
+
+  let currentMainNode = nodes.pop();
+  highAttentionStream.push(currentMainNode);
+
+  while (nodes.length) {
+    const node = nodes.pop();
+    if (highAttentionOrMore(node.step.attentionLevel)) {
+      highAttentionStream.push(node);
+      currentMainNode = node;
+    } else {
+      const stream = findOpenBackgroundStream(node, backgroundStreams);
+      if (stream) {
+        stream.push(node);
+      } else {
+        backgroundStreams.push([node]);
+      }
+    }
+  }
+
+  return [...backgroundStreams, highAttentionStream];
+}
+
+function findOpenBackgroundStream(node, backgroundStreams) {
+  return backgroundStreams.find((stream) => {
+    const lastInStream = stream[stream.length - 1];
+    return (
+      !timingsOverlap(lastInStream, node) ||
+      areParallelizable(
+        node.step.attentionLevel,
+        lastInStream.step.attentionLevel
+      )
+    );
   });
 }

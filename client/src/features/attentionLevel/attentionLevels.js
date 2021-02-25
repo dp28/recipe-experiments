@@ -16,3 +16,7 @@ export function areParallelizable(actionLevel, otherActionLevel) {
 export function lowAttentionOrLess(attentionLevel) {
   return attentionLevel.id === "NONE" || attentionLevel.id === "LOW";
 }
+
+export function highAttentionOrMore(attentionLevel) {
+  return attentionLevel.id === "HIGH" || attentionLevel.id === "TOTAL";
+}
