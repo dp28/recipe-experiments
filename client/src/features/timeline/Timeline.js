@@ -3,6 +3,9 @@ import { buildTimeline } from "./buildTimeline";
 import { useElementVisibleHeight } from "../../utils/hooks";
 import { makeStyles } from "@material-ui/core";
 import { StepDuration } from "../recipe/StepDuration";
+import { buildDisplayableTimeline } from "./buildDisplayableTimeline";
+
+const StepBorderInPx = 1;
 
 const useStyles = makeStyles((theme) => ({
   timeline: {
@@ -16,40 +19,35 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
   },
   step: {
-    borderBottom: `2px solid ${theme.palette.grey[100]}`,
+    borderBottom: `${StepBorderInPx}px solid ${theme.palette.grey[100]}`,
     position: "absolute",
     width: 50,
   },
 }));
 
 export const Timeline = ({ rootTreeNode }) => {
+  const classes = useStyles();
   const timeline = useMemo(() => buildTimeline(rootTreeNode), [rootTreeNode]);
   const [visibleHeight, ref] = useElementVisibleHeight();
-  const pixelsPerSecond = visibleHeight / timeline.duration;
-  const classes = useStyles({ pixelsPerSecond });
-
-  console.log(timeline);
+  const displayableTimeline = useMemo(
+    () => buildDisplayableTimeline(timeline, visibleHeight),
+    [timeline, visibleHeight]
+  );
 
   return (
     <div ref={ref} className={classes.timeline}>
-      {timeline.streams.map((stream) => (
+      {displayableTimeline.streams.map((stream) => (
         <div key={stream[0].step.id} className={classes.stream}>
           {stream.map((node) => {
-            const height =
-              Math.floor(
-                pixelsPerSecond * node.step.time.estimatedDurationInSeconds
-              ) - 1;
-
-            const start = Math.floor(node.timing.start * pixelsPerSecond);
-
             return (
               <StepDuration
                 key={node.step.id}
                 step={node.step}
                 className={classes.step}
+                adjusted={node.display.adjusted}
                 style={{
-                  height,
-                  top: start,
+                  height: node.display.height,
+                  top: node.display.start,
                 }}
               />
             );

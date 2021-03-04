@@ -32,8 +32,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function StepDuration({ step, className, style, withHelp = false }) {
-  const classes = useStyles({ step });
+export function StepDuration({
+  step,
+  className,
+  style,
+  adjusted,
+  withHelp = false,
+}) {
+  const classes = useStyles({ step, adjusted });
 
   return (
     <div className={className} style={style}>

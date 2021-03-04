@@ -119,7 +119,7 @@ function reverseTimes(timeline) {
 function buildStreams(timeline) {
   const highAttentionStream = [];
   const backgroundStreams = [];
-  const nodes = [...timeline.nodes];
+  const nodes = [...timeline.nodes].reverse();
 
   let currentMainNode = nodes.pop();
   highAttentionStream.push(currentMainNode);
@@ -138,6 +138,8 @@ function buildStreams(timeline) {
       }
     }
   }
+
+  sortBy(highAttentionStream, (_) => _.timing.start);
 
   return [...backgroundStreams, highAttentionStream];
 }
