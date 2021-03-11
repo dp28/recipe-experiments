@@ -8,6 +8,15 @@ const AttentionColours = {
   NONE: "#0079ff",
 };
 
+const NumberOfBlocks = 4;
+const NumberOfSlices = NumberOfBlocks * 2 + 1;
+const PercentPerSlice = 100 / NumberOfSlices;
+
+const SlicePercentages = [...Array(NumberOfSlices)].map((_, i) => [
+  i * PercentPerSlice,
+  (i + 1) * PercentPerSlice,
+]);
+
 const useStyles = makeStyles((theme) => ({
   stepDuration: {
     backgroundColor: ({ step }) => AttentionColours[step.attentionLevel.id],
@@ -29,6 +38,30 @@ const useStyles = makeStyles((theme) => ({
   },
   toolTipContent: {
     fontSize: "0.8rem",
+  },
+  adjustedMarker: {
+    width: "100%",
+    height: "4px",
+    position: "relative",
+    background: ({ step }) => {
+      const slices = SlicePercentages.map(([start, end], i) => {
+        const colour =
+          i % 2 === 0
+            ? theme.palette.grey[100]
+            : AttentionColours[step.attentionLevel.id];
+        return `${colour} ${start}% ${end}%`;
+      });
+      return `
+        linear-gradient(
+          90deg,
+          ${slices.join(",")}
+        )
+      `;
+    },
+    backgroundSize: "100%",
+  },
+  content: {
+    width: "100%",
   },
 }));
 
@@ -62,9 +95,12 @@ export function StepDuration({
         }
       >
         <div className={classes.stepDuration}>
-          <Typography className={classes.label}>
-            {toTimeString(step.time.estimatedDurationInSeconds)}
-          </Typography>
+          <div className={classes.content}>
+            <Typography className={classes.label}>
+              {toTimeString(step.time.estimatedDurationInSeconds)}
+            </Typography>
+            {adjusted && <div className={classes.adjustedMarker} />}
+          </div>
         </div>
       </Tooltip>
     </div>
