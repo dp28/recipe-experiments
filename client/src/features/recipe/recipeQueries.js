@@ -10,7 +10,24 @@ export const RecipeQuery = gql`
           name
         }
         amount {
-          ...AmountInfo
+          ... on MeasuredAmount {
+            exactQuantity
+            unit {
+              symbol
+            }
+          }
+          ... on RoughAmount {
+            quantity
+            unit {
+              name {
+                singular
+                plural
+              }
+            }
+          }
+          ... on RawQuantity {
+            exactQuantity
+          }
         }
       }
       finalStep {
@@ -41,7 +58,24 @@ export const RecipeQuery = gql`
           modifier
         }
         amount {
-          ...AmountInfo
+          ... on MeasuredAmount {
+            exactQuantity
+            unit {
+              symbol
+            }
+          }
+          ... on RoughAmount {
+            quantity
+            unit {
+              name {
+                singular
+                plural
+              }
+            }
+          }
+          ... on RawQuantity {
+            exactQuantity
+          }
         }
         optional
       }
@@ -54,27 +88,6 @@ export const RecipeQuery = gql`
     }
     alternativeSteps {
       id
-    }
-  }
-
-  fragment AmountInfo on Amount {
-    ... on MeasuredAmount {
-      exactQuantity
-      unit {
-        symbol
-      }
-    }
-    ... on RoughAmount {
-      quantity
-      unit {
-        name {
-          singular
-          plural
-        }
-      }
-    }
-    ... on RawQuantity {
-      exactQuantity
     }
   }
 `;

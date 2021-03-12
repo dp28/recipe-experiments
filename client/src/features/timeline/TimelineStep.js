@@ -5,8 +5,10 @@ import {
   CardContent,
   Typography,
   Chip,
+  Collapse,
 } from "@material-ui/core";
 import { colourForStep } from "../attentionLevel/attentionLevels";
+import { Ingredients } from "../ingredients/Ingredients";
 
 const useStyles = makeStyles((theme) => ({
   step: {
@@ -14,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
       current ? `3px solid ${theme.palette.secondary.main}` : "",
     cursor: "pointer",
   },
-  content: {
+  body: {
     display: "flex",
     flexDirection: "row",
   },
@@ -24,8 +26,17 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     background: ({ step }) => colourForStep(step),
   },
-  instruction: {
+  content: {
     flexGrow: 1,
+  },
+  ingredients: {
+    marginTop: theme.spacing(2),
+  },
+  ingredientsTitle: {
+    fontWeight: "bold",
+    color: theme.palette.text.secondary,
+    fontStyle: "italic",
+    marginBottom: theme.spacing(1),
   },
 }));
 
@@ -39,11 +50,24 @@ export const TimelineStep = ({ node, current = false, onClick }) => {
       raised={current}
       onClick={() => onClick(node)}
     >
-      <CardContent className={classes.content}>
+      <CardContent className={classes.body}>
         <Chip className={classes.ordering} label={ordering} size="small"></Chip>
-        <Typography className={classes.instruction}>
-          {step.instruction.text}
-        </Typography>
+        <div className={classes.content}>
+          <Typography className={classes.instruction}>
+            {step.instruction.text}
+          </Typography>
+
+          {node.step.input.ingredients.length && (
+            <Collapse in={current}>
+              <div className={classes.ingredients}>
+                <Typography className={classes.ingredientsTitle}>
+                  Ingredients
+                </Typography>
+                <Ingredients ingredients={node.step.input.ingredients} />
+              </div>
+            </Collapse>
+          )}
+        </div>
       </CardContent>
     </Card>
   );

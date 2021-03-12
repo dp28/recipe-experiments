@@ -54,7 +54,6 @@ export const Timeline = ({ rootTreeNode }) => {
 
   const moveOrdering = useCallback(
     (event) => {
-      console.log("press", event.key);
       if (event.key === "ArrowUp") {
         setCurrentStepOrdering(Math.max(1, currentStepOrdering - 1));
       } else if (event.key === "ArrowDown") {

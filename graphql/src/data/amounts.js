@@ -11,7 +11,7 @@ export function buildAmountResolvers(dependencyContainer) {
     },
     Amount: {
       __resolveType(obj) {
-        if (obj.unitIt) {
+        if (obj.unitId) {
           return "MeasuredAmount";
         } else if (obj.roughUnitId) {
           return "RoughAmount";
