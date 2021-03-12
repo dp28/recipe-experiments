@@ -1,12 +1,6 @@
 import React from "react";
 import { Typography, makeStyles, Tooltip } from "@material-ui/core";
-
-const AttentionColours = {
-  TOTAL: "#fb8d00",
-  HIGH: "#ffb84d",
-  LOW: "#46bdff",
-  NONE: "#0079ff",
-};
+import { colourForStep } from "../attentionLevel/attentionLevels";
 
 const NumberOfBlocks = 4;
 const NumberOfSlices = NumberOfBlocks * 2 + 1;
@@ -19,7 +13,7 @@ const SlicePercentages = [...Array(NumberOfSlices)].map((_, i) => [
 
 const useStyles = makeStyles((theme) => ({
   stepDuration: {
-    backgroundColor: ({ step }) => AttentionColours[step.attentionLevel.id],
+    backgroundColor: ({ step }) => colourForStep(step),
     height: "100%",
     minWidth: "4ch",
     display: "flex",
@@ -46,9 +40,7 @@ const useStyles = makeStyles((theme) => ({
     background: ({ step }) => {
       const slices = SlicePercentages.map(([start, end], i) => {
         const colour =
-          i % 2 === 0
-            ? theme.palette.grey[100]
-            : AttentionColours[step.attentionLevel.id];
+          i % 2 === 0 ? theme.palette.grey[100] : colourForStep(step);
         return `${colour} ${start}% ${end}%`;
       });
       return `
@@ -70,6 +62,7 @@ export function StepDuration({
   className,
   style,
   adjusted,
+  label,
   withHelp = false,
 }) {
   const classes = useStyles({ step, adjusted });
@@ -97,7 +90,7 @@ export function StepDuration({
         <div className={classes.stepDuration}>
           <div className={classes.content}>
             <Typography className={classes.label}>
-              {toTimeString(step.time.estimatedDurationInSeconds)}
+              {label || toTimeString(step.time.estimatedDurationInSeconds)}
             </Typography>
             {adjusted && <div className={classes.adjustedMarker} />}
           </div>

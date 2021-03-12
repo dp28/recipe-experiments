@@ -22,6 +22,8 @@ export function buildTimeline(rootNode) {
 
   timeline.streams = buildStreams(timeline);
 
+  timeline.orderedNodes = buildOrderedNodes(timeline);
+
   return timeline;
 }
 
@@ -154,5 +156,15 @@ function findOpenBackgroundStream(node, backgroundStreams) {
         lastInStream.step.attentionLevel
       )
     );
+  });
+}
+
+function buildOrderedNodes(timeline) {
+  return sortBy(
+    [...timeline.nodes],
+    (node) => node.timing.start - node.step.attentionLevel.ordering
+  ).map((node, i) => {
+    node.ordering = i + 1;
+    return node;
   });
 }
