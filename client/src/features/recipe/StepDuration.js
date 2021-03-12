@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    cursor: ({ interactive }) => (interactive ? "pointer" : "default"),
   },
   label: {
     fontSize: "0.8rem",
@@ -63,12 +64,13 @@ export function StepDuration({
   style,
   adjusted,
   label,
+  onClick,
   withHelp = false,
 }) {
-  const classes = useStyles({ step, adjusted });
+  const classes = useStyles({ step, adjusted, interactive: Boolean(onClick) });
 
   return (
-    <div className={className} style={style}>
+    <div className={className} style={style} onClick={() => onClick(step)}>
       <Tooltip
         disableFocusListener={!withHelp}
         disableHoverListener={!withHelp}

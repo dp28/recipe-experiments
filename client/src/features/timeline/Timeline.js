@@ -90,6 +90,7 @@ export const Timeline = ({ rootTreeNode }) => {
                     height: node.display.height,
                     top: node.display.start,
                   }}
+                  onClick={() => setCurrentStepOrdering(node.ordering)}
                 />
               );
             })}
@@ -103,7 +104,7 @@ export const Timeline = ({ rootTreeNode }) => {
             <TimelineStep
               node={node}
               current={node.ordering === currentStepOrdering}
-              onClick={(node) => setCurrentStepOrdering(node.ordering)}
+              onClick={() => setCurrentStepOrdering(node.ordering)}
             />
           </div>
         ))}
